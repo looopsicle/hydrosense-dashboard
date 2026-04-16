@@ -6,7 +6,8 @@ export function useSensorData() {
         ppm: 800,
         temperature: 22.5,
         timestamp: new Date().toLocaleTimeString(),
-        humidity: 50
+        humidity: 50,
+        lux: 75
     });
 
     const [history, setHistory] = useState<SensorData[]>([]);
@@ -18,6 +19,7 @@ export function useSensorData() {
                     ppm: Math.round(prev.ppm + (Math.random() - 0.5) * 10),
                     temperature: Number((prev.temperature + (Math.random() - 0.5) * 0.2).toFixed(1)),
                     humidity: Number((prev.humidity + (Math.random() - 0.5) * 0.2).toFixed(1)),
+                    lux: Number((prev.lux + (Math.random() - 0.5) * 0.2).toFixed(1)),
                     timestamp: new Date().toLocaleTimeString()
                 };
 
