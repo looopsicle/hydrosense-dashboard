@@ -1,0 +1,16 @@
+{
+  "name": "hydrosense-dashboard",
+  "private": true,
+  "workspaces": [
+    "backend",
+    "client"
+  ],
+  "scripts": {
+    "dev:backend": "npm run dev -w backend",
+    "dev:client": "npm run dev -w client",
+    "build:backend": "npm run build -w backend",
+    "build:client": "npm run build -w client",
+    "docker:up": "docker-compose up --build",
+    "docker:down": "docker-compose down"
+  }
+}

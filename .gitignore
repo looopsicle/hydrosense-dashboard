@@ -1,0 +1,27 @@
+# IDE
+.vscode/
+.idea/
+
+# Node
+node_modules/
+dist/
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+.npm
+
+# Environment
+.env
+.env.local
+
+# Prisma
+/backend/prisma/migrations
+
+# Docker
+postgres_data/
+mosquitto_data/
+mosquitto_log/
+
+# OS
+.DS_Store
+Thumbs.db

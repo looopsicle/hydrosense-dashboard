@@ -1,0 +1,44 @@
+services:
+  db:
+    image: postgres:15-alpine
+    container_name: hydrosense-db
+    environment:
+      POSTGRES_USER: user
+      POSTGRES_PASSWORD: password
+      POSTGRES_DB: hydrosense
+    volumes:
+      - ./db/init.sql:/docker-entrypoint-initdb.d/init.sql
+      - postgres_data:/var/lib/postgresql/data
+    ports:
+      - "5433:5433"
+
+  mosquitto:
+    image: eclipse-mosquitto:2.0
+    container_name: hydrosense-mqtt
+    volumes:
+      - ./mosquitto/config/mosquitto.conf:/mosquitto/config/mosquitto.conf
+      - mosquitto_data:/mosquitto/data
+      - mosquitto_log:/mosquitto/log
+    ports:
+      - "1883:1883"
+      - "9001:9001"
+
+  backend:
+    build: 
+      context: ./backend
+      dockerfile: Dockerfile
+    container_name: hydrosense-backend
+    depends_on:
+      - db
+      - mosquitto
+    environment:
+      DATABASE_URL: postgresql://user:password@db:5432/hydrosense
+      MQTT_URL: mqtt://mosquitto:1883
+      PORT: 3001
+    ports:
+      - "3001:3001"
+
+volumes:
+  postgres_data:
+  mosquitto_data:
+  mosquitto_log:
