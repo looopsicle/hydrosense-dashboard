@@ -13,6 +13,8 @@ const mqttOptions: mqtt.IClientOptions = {
     clean: false, 
     reconnectPeriod: 1000,
     connectTimeout: 30 * 1000,
+    username: process.env.MQTT_USERNAME ?? '',
+    password: process.env.MQTT_PASSWORD ?? '',
 };
 
 const client: mqtt.MqttClient = mqtt.connect(brokerUrl, mqttOptions);
