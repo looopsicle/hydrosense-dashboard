@@ -37,7 +37,6 @@ export default function Login() {
                 onSubmit={handleLogin} 
                 className="bg-white p-8 md:p-10 rounded-[2rem] border border-slate-100 shadow-xl shadow-black/5 w-full max-w-md space-y-8"
             >
-                {/* Header Section */}
                 <div className="text-center space-y-3">
                     <div className="w-16 h-16 bg-emerald-100 rounded-2xl flex items-center justify-center mx-auto mb-6 shadow-sm">
                         <Leaf className="w-8 h-8 text-emerald-500" />
@@ -50,7 +49,6 @@ export default function Login() {
                     </p>
                 </div>
 
-                {/* Input Fields */}
                 <div className="space-y-5">
                     <div className="space-y-1.5">
                         <label className="text-xs font-bold text-slate-500 uppercase tracking-wider ml-1">
@@ -69,8 +67,8 @@ export default function Login() {
                             Password
                         </label>
                         <input
-                            type="email"
-                            placeholder="Enter your email"
+                            type="password"
+                            placeholder="Enter your password"
                             value={password}
                             onChange={e => setPassword(e.target.value)}
                             className="w-full px-4 py-3 bg-slate-50 border border-slate-200 rounded-2xl focus:outline-none focus:ring-2 focus:ring-emerald-500/20 focus:border-emerald-500 transition-all font-medium text-slate-700 placeholder:text-slate-400"
@@ -78,7 +76,6 @@ export default function Login() {
                     </div>
                 </div>
 
-                {/* Submit Button */}
                 <button 
                     type="submit" 
                     className="w-full bg-emerald-500 hover:bg-emerald-600 text-white font-bold py-3.5 rounded-2xl shadow-lg shadow-emerald-500/20 transition-all active:scale-[0.98]"

@@ -8,6 +8,7 @@ export const COMMON_PLANTS: Plant[] = [
         idealPpm: { min: 560, max: 840 },
         idealTemp: { min: 18, max: 24 },
         idealHumi: { min: 26, max: 40 },
+        idealLux: { min: 10000, max: 20000 },
     },
     {
         id: '2',
@@ -16,6 +17,7 @@ export const COMMON_PLANTS: Plant[] = [
         idealPpm: { min: 1400, max: 3500 },
         idealTemp: { min: 20, max: 28 },
         idealHumi: { min: 26, max: 40 },
+        idealLux: { min: 25000, max: 50000 },
     },
     {
         id: '3',
@@ -24,6 +26,7 @@ export const COMMON_PLANTS: Plant[] = [
         idealPpm: { min: 700, max: 1120 },
         idealTemp: { min: 21, max: 27 },
         idealHumi: { min: 26, max: 40 },
+        idealLux: { min: 20000, max: 40000 },
     },
     {
         id: '4',
@@ -32,5 +35,6 @@ export const COMMON_PLANTS: Plant[] = [
         idealPpm: { min: 1260, max: 1540 },
         idealTemp: { min: 15, max: 25 },
         idealHumi: { min: 26, max: 40 },
+        idealLux: { min: 20000, max: 35000 },
     },
 ];

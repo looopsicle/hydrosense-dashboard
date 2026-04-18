@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useMemo } from 'react';
-import { Droplets, Thermometer, Power, Zap, Activity, Settings, Bell, Leaf, Waves } from 'lucide-react';
+import { Droplets, Thermometer, Power, Zap, Activity, Settings, Bell, Leaf, Waves, Sun } from 'lucide-react';
 import { motion } from 'motion/react';
 import { AreaChart, Area, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer } from 'recharts';
 
@@ -24,19 +24,48 @@ export default function Dashboard() {
     const { status, toggleDevice } = useDeviceControl();
 
     const ppmStatus = useMemo(() => {
-        if (!selectedPlant) return 'normal';
-        return getStatus(sensorData.ppm, selectedPlant.idealPpm.min, selectedPlant.idealPpm.max);
+        if (!selectedPlant) 
+            return 'normal';
+
+        return getStatus(
+            sensorData.ppm, 
+            selectedPlant.idealPpm.min, 
+            selectedPlant.idealPpm.max
+        );
     }, [sensorData.ppm, selectedPlant]);
 
     const tempStatus = useMemo(() => {
-        if (!selectedPlant) return 'normal';
-        return getStatus(sensorData.temperature, selectedPlant.idealTemp.min, selectedPlant.idealTemp.max);
+        if (!selectedPlant) 
+            return 'normal';
+
+        return getStatus(
+            sensorData.temperature, 
+            selectedPlant.idealTemp.min, 
+            selectedPlant.idealTemp.max
+        );
     }, [sensorData.temperature, selectedPlant]);
 
     const humiStatus = useMemo(() => {
-        if (!selectedPlant) return 'normal';
-        return getStatus(sensorData.humidity, selectedPlant.idealHumi.min, selectedPlant.idealHumi.max);
+        if (!selectedPlant) 
+            return 'normal';
+
+        return getStatus(
+            sensorData.humidity, 
+            selectedPlant.idealHumi.min, 
+            selectedPlant.idealHumi.max
+        );
     }, [sensorData.humidity, selectedPlant]);
+
+    const luxStatus = useMemo(() => {
+        if (!selectedPlant) 
+            return 'normal';
+
+        return getStatus(
+            sensorData.lux,
+            selectedPlant.idealLux.min,
+            selectedPlant.idealLux.max
+        );
+    }, [sensorData.lux, selectedPlant]);
 
     return (
         <div className="min-h-screen bg-[#f8fafc] text-slate-900 p-4 md:p-8 font-sans">
@@ -79,50 +108,61 @@ export default function Dashboard() {
                     animate={{ opacity: 1 }}
                     className="grid grid-cols-1 lg:grid-cols-5 gap-8"
                 >
-                    <div className="lg:col-span-2 grid grid-cols-2 gap-6 auto-rows-fr">    
-                        <SensorCard
-                            title="PPM Level"
-                            value={sensorData.ppm}
-                            unit="ppm"
-                            icon={Waves}
-                            color="bg-blue-500"
-                            status={ppmStatus}
-                        />
-                        <SensorCard
-                            title="Water Temp"
-                            value={sensorData.temperature}
-                            unit="°C"
-                            icon={Thermometer}
-                            color="bg-rose-500"
-                            status={tempStatus}
-                        />
-                        <SensorCard
-                            title="Humidity Storage"
-                            value={sensorData.humidity}
-                            unit="%"
-                            icon={Droplets}
-                            color="bg-green-500"
-                            status={tempStatus}
-                        />
+                    <div className="lg:col-span-2 space-y-6">    
+                        <div className="grid grid-cols-2 gap-6 auto-rows-fr">
+                            <SensorCard
+                                title="PPM Level"
+                                value={sensorData.ppm}
+                                unit="ppm"
+                                icon={Waves}
+                                color="bg-blue-500"
+                                status={ppmStatus}
+                            />
+                            <SensorCard
+                                title="Water Temp"
+                                value={sensorData.temperature}
+                                unit="°C"
+                                icon={Thermometer}
+                                color="bg-rose-500"
+                                status={tempStatus}
+                            />
+                            <SensorCard
+                                title="Humidity Storage"
+                                value={sensorData.humidity}
+                                unit="%"
+                                icon={Droplets}
+                                color="bg-green-500"
+                                status={tempStatus}
+                            />
+                            <SensorCard
+                                title="Light Intensity"
+                                value={sensorData.lux}
+                                unit="lx"
+                                icon={Sun}
+                                color="bg-yellow-500"
+                                status={luxStatus}
+                            />
+                        </div>
+
                         <div className="bg-slate-900 p-5 rounded-[2rem] shadow-2xl space-y-6">
                             <h3 className="text-white font-bold flex items-center gap-2">
                                 <Power className="w-5 h-5 text-emerald-400" />
                                 Device Controls
                             </h3>
-                            <div className="space-y-3">
+                            <div className="grid grid-cols-2 gap-4">
                                 <ControlToggle
                                     label="Water Pump"
                                     isActive={status.waterPump}
                                     onToggle={() => toggleDevice('waterPump')}
                                     icon={Activity}
-                                    activeColor="bg-amber-500"
+                                    activeColor="bg-cyan-500"
                                 />
                                 <ControlToggle
                                     label="UV Light"
                                     isActive={status.uvLight}
                                     onToggle={() => toggleDevice('uvLight')}
                                     icon={Zap}
-                                    activeColor="bg-indigo-700"
+                                    activeColor="bg-indigo-500"
                                 />
                             </div>
                         </div>

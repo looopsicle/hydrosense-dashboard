@@ -5,6 +5,7 @@ export interface Plant {
     idealPpm: { min: number; max: number };
     idealTemp: { min: number; max: number };
     idealHumi: { min: number; max: number };
+    idealLux: { min: number; max: number };
 }
 
 export interface SensorData {
@@ -12,6 +13,7 @@ export interface SensorData {
     temperature: number;
     timestamp: string;
     humidity: number;
+    lux: number;
 }
 
 export interface DeviceStatus {
