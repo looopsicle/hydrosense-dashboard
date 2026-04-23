@@ -1,5 +1,5 @@
-import React, { useState } from 'react';
-import { Search, Plus, Leaf } from 'lucide-react';
+import { useState } from 'react';
+import { Plus, Leaf } from 'lucide-react';
 import type { Plant } from '../types';
 import { COMMON_PLANTS } from '../dummy_data';
 import { motion, AnimatePresence } from 'motion/react';
@@ -9,7 +9,7 @@ interface PlantSelectorProps {
     onSelect: (plant: Plant) => void;
 }
 
-export const PlantSelector: React.FC<PlantSelectorProps> = ({ selectedPlant, onSelect }) => {
+export const PlantSelector = ({ selectedPlant, onSelect }: PlantSelectorProps) => {
     const [isAdding, setIsAdding] = useState(false);
     const [customName, setCustomName] = useState('');
 
@@ -22,6 +22,7 @@ export const PlantSelector: React.FC<PlantSelectorProps> = ({ selectedPlant, onS
             idealPpm: { min: 800, max: 1200 },
             idealTemp: { min: 20, max: 25 },
             idealHumi: { min: 26, max: 40 },
+            idealLux: { min: 1000, max: 5000 },
         };
         onSelect(newPlant);
         setCustomName('');

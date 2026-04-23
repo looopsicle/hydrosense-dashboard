@@ -10,13 +10,25 @@ export function useDeviceControl() {
 
     const toggleDevice = async (key: keyof DeviceStatus) => {
         const newValue = !status[key];
-        
-        setStatus(prev => ({
-            ...prev,
-            [key]: newValue
-        }));
+        const deviceName = key === 'waterPump' ? 'pump' : 'light';
+        const action = newValue ? 'ON' : 'OFF';
 
-        // call api await updateDevice(key, newValue) / mqtt publsh 
+        try {
+            // Optimistic update
+            setStatus(prev => ({
+                ...prev,
+                [key]: newValue
+            }));
+
+            await updateDevice(deviceName, action);
+        } catch (err) {
+            console.error(`Failed to toggle ${key}:`, err);
+            // Revert on error
+            setStatus(prev => ({
+                ...prev,
+                [key]: !newValue
+            }));
+        }
     };
 
     return { status, toggleDevice };

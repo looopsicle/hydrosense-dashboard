@@ -1,4 +1,3 @@
-import React from 'react';
 import { motion } from 'motion/react';
 import type { LucideIcon } from 'lucide-react';
 import { cn } from '../lib/utils';
@@ -11,13 +10,13 @@ interface ControlToggleProps {
     activeColor: string;
 }
 
-export const ControlToggle: React.FC<ControlToggleProps> = ({
+export const ControlToggle = ({
     label,
     isActive,
     onToggle,
     icon: Icon,
     activeColor,
-}) => {
+}: ControlToggleProps) => {
     return (
         <button
             onClick={onToggle}

@@ -1,6 +1,8 @@
 import express from 'express';
 import cors from 'cors';
 import dotenv from 'dotenv';
+import { createServer } from 'http';
+import { Server } from 'socket.io';
 
 import pool from './db.js';
 import client, { publishCommand } from './mqtt.js';
@@ -10,8 +12,28 @@ dotenv.config();
 const app = express();
 const port = process.env.PORT || 3001;
 
+// Wrap express app with HTTP server
+const httpServer = createServer(app);
+
+// Initialize Socket.io
+export const io = new Server(httpServer, {
+    cors: {
+        origin: '*', // In production, replace with specific origins
+        methods: ['GET', 'POST']
+    }
+});
+
 app.use(cors());
 app.use(express.json());
+
+// Socket.io connection handler
+io.on('connection', (socket) => {
+    console.log(`New client connected: ${socket.id}`);
+    
+    socket.on('disconnect', () => {
+        console.log(`Client disconnected: ${socket.id}`);
+    });
+});
 
 // 1. Get latest sensor data
 app.get('/api/sensors/latest', async (req, res) => {
@@ -55,7 +77,7 @@ app.post('/api/actuators/toggle', (req, res) => {
     res.json({ status: 'Command sent', device, action });
 });
 
-app.listen(port, () => {
+httpServer.listen(port, () => {
     console.log(`Server is running on http://localhost:${port}`);
     console.log('MQTT Client initialized.');
 });

@@ -1,35 +1,66 @@
 import { useEffect, useState } from 'react';
 import type { SensorData } from '../types';
+import { socket } from '../lib/socket';
 
 export function useSensorData() {
     const [sensorData, setSensorData] = useState<SensorData>({
-        ppm: 800,
-        temperature: 22.5,
-        timestamp: new Date().toLocaleTimeString(),
-        humidity: 50,
-        lux: 75
+        ppm: 0,
+        temperature: 0,
+        timestamp: '--:--:--',
+        humidity: 0,
+        lux: 0
     });
 
     const [history, setHistory] = useState<SensorData[]>([]);
 
     useEffect(() => {
-        const interval = setInterval(() => {
-            setSensorData(prev => {
-                const newData = {
-                    ppm: Math.round(prev.ppm + (Math.random() - 0.5) * 10),
-                    temperature: Number((prev.temperature + (Math.random() - 0.5) * 0.2).toFixed(1)),
-                    humidity: Number((prev.humidity + (Math.random() - 0.5) * 0.2).toFixed(1)),
-                    lux: Number((prev.lux + (Math.random() - 0.5) * 0.2).toFixed(1)),
-                    timestamp: new Date().toLocaleTimeString()
-                };
-
-                setHistory(h => [...h.slice(-19), newData]);
+        // 1. Fetch initial history
+        const fetchHistory = async () => {
+            try {
+                const baseUrl = import.meta.env.VITE_API_URL || 'http://localhost:3001';
+                const response = await fetch(`${baseUrl}/api/sensors/history?limit=20`);
+                const data = await response.json();
                 
-                return newData;
-            });
-        }, 3000);
+                // Map DB fields to Frontend fields
+                const formattedData = data.map((item: any) => ({
+                    ppm: item.tds,
+                    temperature: item.water_temp,
+                    humidity: item.room_temp,
+                    lux: item.lux,
+                    timestamp: new Date(item.timestamp).toLocaleTimeString()
+                })).reverse();
 
-        return () => clearInterval(interval);
+                setHistory(formattedData);
+                if (formattedData.length > 0) {
+                    setSensorData(formattedData[formattedData.length - 1]);
+                }
+            } catch (err) {
+                console.error('Error fetching history:', err);
+            }
+        };
+
+        fetchHistory();
+
+        // 2. Listen for real-time updates
+        socket.on('sensorUpdate', (data: any) => {
+            const newData: SensorData = {
+                ppm: data.tds,
+                temperature: data.water_temp,
+                humidity: data.room_temp,
+                lux: data.lux,
+                timestamp: new Date(data.timestamp).toLocaleTimeString()
+            };
+
+            setSensorData(newData);
+            setHistory(prev => {
+                const updatedHistory = [...prev, newData];
+                return updatedHistory.slice(-20);
+            });
+        });
+
+        return () => {
+            socket.off('sensorUpdate');
+        };
     }, []);
 
     return { sensorData, history };

@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useMemo } from 'react';
+import { useState, useMemo } from 'react';
 import { Droplets, Thermometer, Power, Zap, Activity, Settings, Bell, Leaf, Waves, Sun } from 'lucide-react';
 import { motion } from 'motion/react';
 import { AreaChart, Area, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer } from 'recharts';
@@ -132,7 +132,7 @@ export default function Dashboard() {
                                 unit="%"
                                 icon={Droplets}
                                 color="bg-green-500"
-                                status={tempStatus}
+                                status={humiStatus}
                             />
                             <SensorCard
                                 title="Light Intensity"

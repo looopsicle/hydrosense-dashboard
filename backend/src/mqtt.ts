@@ -48,10 +48,16 @@ client.on('message', async (topic: string, message: Buffer) => {
             const query = `
                 INSERT INTO sensor_data (tds, water_temp, room_temp, lux)
                 VALUES ($1, $2, $3, $4)
+                RETURNING *
             `;
-            await pool.query(query, [tds, water_temp, room_temp, lux]);
+            const result = await pool.query(query, [tds, water_temp, room_temp, lux]);
+            const savedData = result.rows[0];
             
             console.log('Sensor data saved to database');
+
+            // Emit via Socket.io
+            const { io } = await import('./index.js');
+            io.emit('sensorUpdate', savedData);
         } catch (err) {
             console.error('Error processing MQTT message:', err);
         }

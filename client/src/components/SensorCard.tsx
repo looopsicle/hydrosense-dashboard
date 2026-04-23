@@ -1,4 +1,3 @@
-import React from 'react';
 import { motion } from 'motion/react';
 import type { LucideIcon } from 'lucide-react';
 import { cn } from '../lib/utils';
@@ -12,14 +11,14 @@ interface SensorCardProps {
     status: 'normal' | 'warning' | 'critical';
 }
 
-export const SensorCard: React.FC<SensorCardProps> = ({
+export const SensorCard = ({
     title,
     value,
     unit,
     icon: Icon,
     color,
     status,
-}) => {
+}: SensorCardProps) => {
     const statusColors = {
         normal: 'text-emerald-500',
         warning: 'text-amber-500',
